@@ -93,15 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (_) => const AddExpenseScreen()));
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Thêm'),
-      ),
     );
   }
 }

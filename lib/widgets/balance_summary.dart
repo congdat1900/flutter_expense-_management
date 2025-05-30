@@ -9,8 +9,10 @@ class BalanceSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final formattedTotal = NumberFormat.currency(
       locale: 'vi_VN',
-      symbol: '₫',
+      symbol: 'VND',
+      decimalDigits: 0,
     ).format(total);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +33,7 @@ class BalanceSummary extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '$formattedTotal VND',
+            formattedTotal,
             style: const TextStyle(
               fontSize: 32,
               color: Colors.white,

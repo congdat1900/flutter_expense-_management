@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'providers/expense_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_screen.dart';
 import 'theme.dart';
 
 void main() {
@@ -27,7 +28,7 @@ class BudgetApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Budget Manager',
         theme: AppTheme.lightTheme,
-        home: const HomeScreen(),
+        home: const MainScreen(),
       ),
     );
   }

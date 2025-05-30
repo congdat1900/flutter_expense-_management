@@ -15,6 +15,12 @@ class ExpensesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = NumberFormat.currency(
+      locale: 'vi_VN',
+      symbol: '',
+      decimalDigits: 0,
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -33,7 +39,6 @@ class ExpensesTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              // Icon vòng tròn
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -49,7 +54,6 @@ class ExpensesTile extends StatelessWidget {
 
               const SizedBox(width: 16),
 
-              // Nội dung chi tiêu
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,12 +77,11 @@ class ExpensesTile extends StatelessWidget {
                 ),
               ),
 
-              // Số tiền và nút xoá
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${expense.amount.toStringAsFixed(0)} VND',
+                    '${formatter.format(expense.amount)} VND',
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
