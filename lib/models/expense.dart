@@ -30,17 +30,15 @@ class Expense {
       'title': title,
       'amount': amount,
       'date': date.toIso8601String(),
-      'category': category.name, // Lưu dưới dạng tên string
+      'category': category.name,
     };
   }
 
   factory Expense.fromMap(Map<String, dynamic> map) {
-    // Đảm bảo category là chuỗi và thuộc các giá trị hợp lệ
     ExpenseCategory category;
     try {
       category = ExpenseCategory.values.byName(map['category']);
     } catch (_) {
-      // Nếu không tìm thấy tên category, mặc định là 'other'
       category = ExpenseCategory.other;
     }
 

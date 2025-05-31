@@ -21,84 +21,104 @@ class ExpensesTile extends StatelessWidget {
       decimalDigits: 0,
     );
 
+    final categoryColor = _getCategoryColor(expense.category);
+    final iconPath = _getCategoryIconPath(expense.category);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(16),
+          leading: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: categoryColor.withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+            child: Center(child: Image.asset(iconPath, width: 22, height: 22)),
+          ),
+          title: Text(
+            expense.title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text(
+            DateFormat('dd/MM/yyyy').format(expense.date),
+            style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+          ),
+          trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.blue,
-                  size: 20,
+              Text(
+                '${formatter.format(expense.amount)} đ',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: categoryColor,
                 ),
               ),
-
-              const SizedBox(width: 16),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      expense.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      DateFormat('dd/MM/yyyy').format(expense.date),
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '${formatter.format(expense.amount)} VND',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.redAccent,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20, color: Colors.red),
-                    onPressed: onDelete,
-                    tooltip: 'Xoá',
-                  ),
-                ],
+              const SizedBox(height: 4),
+              GestureDetector(
+                onTap: onDelete,
+                child: const Icon(Icons.delete, size: 20, color: Colors.red),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Color _getCategoryColor(ExpenseCategory category) {
+    switch (category) {
+      case ExpenseCategory.food:
+        return Colors.redAccent;
+      case ExpenseCategory.pet:
+        return Colors.blueAccent;
+      case ExpenseCategory.entertainment:
+        return Colors.orange;
+      case ExpenseCategory.shopping:
+        return Colors.green;
+      case ExpenseCategory.tech:
+        return Colors.purple;
+      case ExpenseCategory.home:
+        return Colors.grey;
+      case ExpenseCategory.travel:
+        return Colors.black;
+      case ExpenseCategory.other:
+        return Colors.pinkAccent;
+    }
+  }
+
+  String _getCategoryIconPath(ExpenseCategory category) {
+    switch (category) {
+      case ExpenseCategory.food:
+        return 'assets/icons/food.png';
+      case ExpenseCategory.pet:
+        return 'assets/icons/pet.png';
+      case ExpenseCategory.entertainment:
+        return 'assets/icons/entertainment.png';
+      case ExpenseCategory.shopping:
+        return 'assets/icons/shopping.png';
+      case ExpenseCategory.home:
+        return 'assets/icons/home.png';
+      case ExpenseCategory.tech:
+        return 'assets/icons/tech.png';
+      case ExpenseCategory.travel:
+        return 'assets/icons/travel.png';
+      case ExpenseCategory.other:
+        return 'assets/icons/other.png';
+    }
   }
 }

@@ -40,7 +40,6 @@ class ChartScreen extends StatelessWidget {
 
     final totalAmount = categoryTotals.values.fold(0.0, (a, b) => a + b);
 
-    // Formatter tiền Việt Nam
     final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
 
     return Scaffold(
@@ -83,10 +82,6 @@ class ChartScreen extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
-                                badgeWidget: _Badge(
-                                  label: describeCategory(entry.key),
-                                ),
-                                badgePositionPercentageOffset: .98,
                               );
                             }).toList(),
                           ),
@@ -184,29 +179,6 @@ class _LegendItem extends StatelessWidget {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ],
-    );
-  }
-}
-
-class _Badge extends StatelessWidget {
-  final String label;
-  const _Badge({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-      decoration: BoxDecoration(
-        color: Colors.black54,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(color: Colors.white, fontSize: 12),
-      ),
     );
   }
 }

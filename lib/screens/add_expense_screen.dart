@@ -60,33 +60,42 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     }
   }
 
+  // Không thay đổi phần import và phần class model
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Thêm khoản chi tiêu')),
+      appBar: AppBar(
+        title: const Text('Thêm khoản chi tiêu'),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              // Card Title
               Card(
-                elevation: 4,
+                elevation: 6,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
+                      // Tiêu đề
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Tiêu đề khoản chi',
-                          prefixIcon: Icon(Icons.title),
-                          border: OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.title),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         validator: (value) => value == null || value.isEmpty
                             ? 'Vui lòng nhập tiêu đề'
@@ -94,11 +103,17 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         onSaved: (value) => _title = value ?? '',
                       ),
                       const SizedBox(height: 16),
+
+                      // Số tiền
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Số tiền (VND)',
-                          prefixIcon: Icon(Icons.money),
-                          border: OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.money),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
@@ -116,11 +131,17 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             _amountStr = value?.replaceAll('.', '') ?? '',
                       ),
                       const SizedBox(height: 16),
+
+                      // Danh mục
                       DropdownButtonFormField<ExpenseCategory>(
                         value: _selectedCategory,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Danh mục',
-                          border: OutlineInputBorder(),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         items: ExpenseCategory.values.map((cat) {
                           return DropdownMenuItem(
@@ -139,45 +160,57 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           );
                         }).toList(),
                         onChanged: (val) {
-                          if (val != null)
+                          if (val != null) {
                             setState(() => _selectedCategory = val);
+                          }
                         },
                       ),
-
                       const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Ngày: ${_selectedDate.toLocal().toString().split(' ')[0]}',
-                            style: theme.textTheme.bodyLarge,
+
+                      // Ngày
+                      GestureDetector(
+                        onTap: _pickDate,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
                           ),
-                          TextButton.icon(
-                            onPressed: _pickDate,
-                            icon: const Icon(Icons.calendar_today),
-                            label: const Text('Chọn ngày'),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade300),
                           ),
-                        ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Ngày: ${_selectedDate.toLocal().toString().split(' ')[0]}',
+                                style: theme.textTheme.bodyLarge,
+                              ),
+                              const Icon(Icons.calendar_today, size: 20),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 30),
 
-              // Save button
+              // Nút lưu
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.save),
+                child: FilledButton.icon(
                   onPressed: _submit,
+                  icon: const Icon(Icons.save),
                   label: const Text('Lưu giao dịch'),
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     textStyle: const TextStyle(fontSize: 16),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ),
@@ -187,47 +220,5 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         ),
       ),
     );
-  }
-
-  String _getCategoryName(ExpenseCategory cat) {
-    switch (cat) {
-      case ExpenseCategory.food:
-        return 'Ăn uống';
-      case ExpenseCategory.pet:
-        return 'pet';
-      case ExpenseCategory.entertainment:
-        return 'Giải trí';
-      case ExpenseCategory.shopping:
-        return 'Mua sắm';
-      case ExpenseCategory.tech:
-        return 'Công nghệ';
-      case ExpenseCategory.travel:
-        return 'Du lịch';
-      case ExpenseCategory.home:
-        return 'Nhà';
-      case ExpenseCategory.other:
-        return 'Khác';
-    }
-  }
-
-  String _getCategoryIconPath(ExpenseCategory cat) {
-    switch (cat) {
-      case ExpenseCategory.food:
-        return 'assets/icons/food.png';
-      case ExpenseCategory.pet:
-        return 'assets/icons/pet.png';
-      case ExpenseCategory.entertainment:
-        return 'assets/icons/entertainment.png';
-      case ExpenseCategory.shopping:
-        return 'assets/icons/shopping.png';
-      case ExpenseCategory.home:
-        return 'assets/icons/home.png';
-      case ExpenseCategory.tech:
-        return 'assets/icons/tech.png';
-      case ExpenseCategory.travel:
-        return 'assets/icons/travel.png';
-      case ExpenseCategory.other:
-        return 'assets/icons/other.png';
-    }
   }
 }

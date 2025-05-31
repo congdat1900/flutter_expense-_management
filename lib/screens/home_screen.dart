@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../providers/expense_provider.dart';
 import '../widgets/balance_summary.dart';
 import '../widgets/expenses_tile.dart';
-import 'add_expense_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
